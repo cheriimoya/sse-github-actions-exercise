@@ -56,7 +56,7 @@ class SolveDiffusion2D:
 
         print("dt = {}".format(self.dt))
 
-    def get_initial_condition(self):
+    def set_initial_condition(self):
         u = self.T_cold * np.ones((self.nx, self.ny))
 
         # Initial conditions - circle of radius r centred at (cx,cy) (mm)
@@ -108,7 +108,7 @@ def main():
 
     DiffusionSolver.initialize_physical_parameters()
 
-    u0 = DiffusionSolver.get_initial_condition()
+    u0 = DiffusionSolver.set_initial_condition()
 
     # Number of timesteps
     nsteps = 101

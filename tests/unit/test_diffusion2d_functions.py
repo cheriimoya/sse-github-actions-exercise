@@ -19,7 +19,7 @@ def test_initialize_physical_parameters():
     solver = SolveDiffusion2D()
 
 
-def test_get_initial_condition():
+def test_set_initial_condition():
     """
     Checks function SolveDiffusion2D.get_initial_function
     """
