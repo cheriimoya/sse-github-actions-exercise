@@ -111,12 +111,13 @@ def output_figure(fig, im):
     plt.show()
 
 
-def main():
-    DiffusionSolver = SolveDiffusion2D()
-
-    DiffusionSolver.initialize_domain()
-
-    DiffusionSolver.initialize_physical_parameters()
+def main(solver: SolveDiffusion2D = None):
+    if solver is None:
+        DiffusionSolver = SolveDiffusion2D()
+        DiffusionSolver.initialize_domain()
+        DiffusionSolver.initialize_physical_parameters()
+    else:
+        DiffusionSolver = solver
 
     u0 = DiffusionSolver.set_initial_condition()
 
