@@ -159,6 +159,58 @@ FAILED tests/unit/test_diffusion2d_functions.py::test_set_initial_condition - As
 
 ### unittest log
 
+```
+$ python -m unittest tests/unit/test_diffusion2d_functions.py
+Fdt = -0.41728395061728396
+FF
+======================================================================
+FAIL: test_initialize_domain (tests.unit.test_diffusion2d_functions.TestDiffusion2D)
+Check function SolveDiffusion2D.initialize_domain
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/max/sse/testing-python-exercise/tests/unit/test_diffusion2d_functions.py", line 30, in test_initialize_domain
+    self.assertEqual(self.solver.nx, expected_nx, 'initialize_domain produced wrong nx value')
+AssertionError: 4 != 6 : initialize_domain produced wrong nx value
+
+======================================================================
+FAIL: test_initialize_physical_parameters (tests.unit.test_diffusion2d_functions.TestDiffusion2D)
+Checks function SolveDiffusion2D.initialize_domain
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/max/sse/testing-python-exercise/tests/unit/test_diffusion2d_functions.py", line 51, in test_initialize_physical_parameters
+    self.assertEqual(self.solver.dt, expected_dt, 'dt is not calculated correctly')
+AssertionError: -0.41728395061728396 != 0.25037037037037035 ± 2.5e-07 : dt is not calculated correctly
+
+======================================================================
+FAIL: test_set_initial_condition (tests.unit.test_diffusion2d_functions.TestDiffusion2D)
+Checks function SolveDiffusion2D.get_initial_function
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/max/sse/testing-python-exercise/tests/unit/test_diffusion2d_functions.py", line 103, in test_set_initial_condition
+    assert_allclose(actual_u, expected_u)
+  File "/nix/store/10rxgb060b4l5cp9xjn630qhxvb0ii9z-python3-3.9.6-env/lib/python3.9/site-packages/numpy/testing/_private/utils.py", line 1530, in assert_allclose
+    assert_array_compare(compare, actual, desired, err_msg=str(err_msg),
+  File "/nix/store/10rxgb060b4l5cp9xjn630qhxvb0ii9z-python3-3.9.6-env/lib/python3.9/site-packages/numpy/testing/_private/utils.py", line 844, in assert_array_compare
+    raise AssertionError(msg)
+AssertionError:
+Not equal to tolerance rtol=1e-07, atol=0
+
+Mismatched elements: 108 / 800 (13.5%)
+Max absolute difference: 336.1
+Max relative difference: 0.51125646
+ x: array([[321.3, 321.3, 321.3, 321.3, 321.3, 321.3, 321.3, 321.3, 321.3,
+        321.3, 321.3, 321.3, 321.3, 321.3, 321.3, 321.3, 321.3, 321.3,
+        321.3, 321.3, 321.3, 321.3, 321.3, 321.3, 321.3],...
+ y: array([[321.3, 321.3, 321.3, 321.3, 321.3, 321.3, 321.3, 321.3, 321.3,
+        321.3, 321.3, 321.3, 321.3, 321.3, 321.3, 321.3, 321.3, 321.3,
+        321.3, 321.3, 321.3, 321.3, 321.3, 321.3, 321.3],...
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.010s
+
+FAILED (failures=3)
+```
+
 ## Citing
 
 The code used in this exercise is based on [Chapter 7 of the book "Learning Scientific Programming with Python"](https://scipython.com/book/chapter-7-matplotlib/examples/the-two-dimensional-diffusion-equation/).
