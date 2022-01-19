@@ -211,6 +211,135 @@ Ran 3 tests in 0.010s
 FAILED (failures=3)
 ```
 
+Integration test log
+
+```
+$ python -m pytest
+===================================================== test session starts =====================================================
+platform linux -- Python 3.9.6, pytest-6.2.5, py-1.10.0, pluggy-1.0.0
+rootdir: /home/max/sse/testing-python-exercise
+collected 5 items
+
+tests/integration/test_diffusion2d.py FF                                                                                [ 40%]
+tests/unit/test_diffusion2d_functions.py FF.                                                                            [100%]
+
+========================================================== FAILURES ===========================================================
+_____________________________________________ test_initialize_physical_parameters _____________________________________________
+
+    def test_initialize_physical_parameters():
+        """
+        Checks function SolveDiffusion2D.initialize_domain
+        """
+        expected_dt = 0.0532539717274279
+
+        solver = SolveDiffusion2D()
+        solver.initialize_domain(w=13., h=7., dx=1.3, dy=1.2)
+        solver.initialize_physical_parameters(d=7.3, T_cold=321., T_hot=720.)
+
+>       assert solver.dt == approx(expected_dt)
+E       assert 0.6667397260273967 == 0.0532539717274279 ± 5.3e-08
+E        +  where 0.6667397260273967 = <diffusion2d.SolveDiffusion2D object at 0x7f74366fe670>.dt
+E        +  and   0.0532539717274279 ± 5.3e-08 = approx(0.0532539717274279)
+
+tests/integration/test_diffusion2d.py:21: AssertionError
+---------------------------------------------------- Captured stdout call -----------------------------------------------------
+dt = 0.6667397260273967
+_________________________________________________ test_set_initial_condition __________________________________________________
+
+    def test_set_initial_condition():
+        """
+        Checks function SolveDiffusion2D.get_initial_function
+        """
+        expected_u = [
+            [321., 321., 321., 321., 321.],
+            [321., 321., 321., 321., 321.],
+            [321., 321., 321., 321., 321.],
+            [321., 321., 321., 720., 720.],
+            [321., 321., 321., 720., 720.],
+            [321., 321., 321., 321., 720.],
+            [321., 321., 321., 321., 321.],
+            [321., 321., 321., 321., 321.],
+            [321., 321., 321., 321., 321.],
+            [321., 321., 321., 321., 321.],
+        ]
+
+        solver = SolveDiffusion2D()
+
+        solver.initialize_domain(w=13., h=7., dx=1.3, dy=1.2)
+        solver.initialize_physical_parameters(d=7.3, T_cold=321., T_hot=720.)
+        actual_u = solver.set_initial_condition()
+
+>       assert_allclose(actual_u, expected_u)
+E       AssertionError:
+E       Not equal to tolerance rtol=1e-07, atol=0
+E
+E       (shapes (5, 5), (10, 5) mismatch)
+E        x: array([[321., 321., 321., 321., 321.],
+E              [321., 321., 321., 321., 321.],
+E              [321., 321., 321., 321., 321.],...
+E        y: array([[321., 321., 321., 321., 321.],
+E              [321., 321., 321., 321., 321.],
+E              [321., 321., 321., 321., 321.],...
+
+tests/integration/test_diffusion2d.py:47: AssertionError
+---------------------------------------------------- Captured stdout call -----------------------------------------------------
+dt = 0.6667397260273967
+___________________________________________ TestDiffusion2D.test_initialize_domain ____________________________________________
+
+self = <test_diffusion2d_functions.TestDiffusion2D testMethod=test_initialize_domain>
+
+    def test_initialize_domain(self):
+        """
+        Check function SolveDiffusion2D.initialize_domain
+        """
+        expected_nx = 6
+        expected_ny = 2
+
+        # nx = int(w / dx)
+        # ny = int(h / dy)
+
+        self.solver.initialize_domain(w=9.1, h=6.2, dx=1.4, dy=2.6)
+
+>       self.assertEqual(self.solver.nx, expected_nx, 'initialize_domain produced wrong nx value')
+E       AssertionError: 4 != 6 : initialize_domain produced wrong nx value
+
+tests/unit/test_diffusion2d_functions.py:30: AssertionError
+_____________________________________ TestDiffusion2D.test_initialize_physical_parameters _____________________________________
+
+self = <test_diffusion2d_functions.TestDiffusion2D testMethod=test_initialize_physical_parameters>
+
+    def test_initialize_physical_parameters(self):
+        """
+        Checks function SolveDiffusion2D.initialize_domain
+        """
+        self.solver.w = 9.1
+        self.solver.h = 6.2
+        self.solver.dx = 1.3
+        self.solver.dy = 2.6
+        self.solver.nx = 6
+        self.solver.ny = 2
+
+        # dx2, dy2 = self.dx * self.dx, self.dy * self.dy
+        # dt = dx2 * dy2 / (2 * self.D * (dx2 + dy2))
+
+        expected_dt = approx(0.25037037037037035)
+
+        self.solver.initialize_physical_parameters(d=2.7, T_cold=321.3, T_hot=657.4)
+
+>       self.assertEqual(self.solver.dt, expected_dt, 'dt is not calculated correctly')
+E       AssertionError: -0.41728395061728396 != 0.25037037037037035 ± 2.5e-07 : dt is not calculated correctly
+
+tests/unit/test_diffusion2d_functions.py:51: AssertionError
+---------------------------------------------------- Captured stdout call -----------------------------------------------------
+dt = -0.41728395061728396
+=================================================== short test summary info ===================================================
+FAILED tests/integration/test_diffusion2d.py::test_initialize_physical_parameters - assert 0.6667397260273967 == 0.053253971...
+FAILED tests/integration/test_diffusion2d.py::test_set_initial_condition - AssertionError:
+FAILED tests/unit/test_diffusion2d_functions.py::TestDiffusion2D::test_initialize_domain - AssertionError: 4 != 6 : initiali...
+FAILED tests/unit/test_diffusion2d_functions.py::TestDiffusion2D::test_initialize_physical_parameters - AssertionError: -0.4...
+================================================= 4 failed, 1 passed in 0.30s =================================================
+```
+
 ## Citing
 
 The code used in this exercise is based on [Chapter 7 of the book "Learning Scientific Programming with Python"](https://scipython.com/book/chapter-7-matplotlib/examples/the-two-dimensional-diffusion-equation/).
