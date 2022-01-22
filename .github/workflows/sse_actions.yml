@@ -1,0 +1,57 @@
+name: Check, test and report coverage
+
+on:
+  - push
+
+jobs:
+  style_check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8.10'
+      - name: "Install dependencies"
+        run: pip install --user -r requirements.txt
+      - name: "Run style check"
+        run: black --check .
+
+  test:
+    needs: style_check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8.10'
+      - name: "Install dependencies"
+        run: pip install --user -r requirements.txt
+      - name: "Run pytest"
+        run: python -m pytest
+      - name: "Run unittest"
+        run: python -m unittest
+      - name: "Generate coverage file"
+        run: python -m coverage run -m unittest tests/unit/test_diffusion2d_functions.py
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v2
+        with:
+          name: unittest-coverage
+          path: .coverage
+          retention-days: 1
+
+  coverage_report:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8.10'
+      - name: "Install dependencies"
+        run: pip install --user -r requirements.txt
+      - name: "Download .coverage"
+        uses: actions/download-artifact@v2
+        with:
+          name: unittest-coverage
+      - name: "Create coverage report"
+        run: python -m coverage html
