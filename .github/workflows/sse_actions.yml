@@ -54,4 +54,14 @@ jobs:
         with:
           name: unittest-coverage
       - name: "Create coverage report"
-        run: python -m coverage html
+        run: python -m coverage xml
+      - name: Upload coverage.xml
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-report-xml
+          path: coverage.xml
+          retention-days: 14
+      - name: Download a single artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: unittest-coverage

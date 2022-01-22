@@ -1,5 +1,7 @@
 # Python code to solve the diffusion equation in 2D
 
+[![SSE CI/CD](https://github.com/cheriimoya/sse-github-actions-exercise/actions/workflows/sse_actions.yml/badge.svg)](https://github.com/cheriimoya/sse-github-actions-exercise/actions/workflows/sse_actions.yml)
+
 Please follow the instructions in [python_testing_exercise.md](https://github.com/Simulation-Software-Engineering/Lecture-Material/blob/main/05_testing_and_ci/python_testing_exercise.md).
 
 ## Test logs (for submission)
