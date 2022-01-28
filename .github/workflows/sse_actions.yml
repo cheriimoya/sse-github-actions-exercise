@@ -54,6 +54,8 @@ jobs:
         with:
           name: unittest-coverage
       - name: "Create coverage report"
+        run: python -m coverage report
+      - name: "Create coverage report as XML"
         run: python -m coverage xml
       - name: Upload coverage.xml
         uses: actions/upload-artifact@v2
